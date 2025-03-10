@@ -27,15 +27,28 @@ func CreateHandler(s storage.Storage) http.HandlerFunc {
 		}
 
 		secret := r.FormValue("secret")
-		expiration, _ := strconv.Atoi(r.FormValue("expiration"))
-		if expiration == 0 {
-			expiration = 60
+
+		expiration, err := strconv.Atoi(r.FormValue("expiration"))
+
+		if err != nil {
+			if r.FormValue("expiration") == "" {
+				expiration = 60
+			} else {
+				http.Error(w, "Expected int value", http.StatusNotAcceptable)
+				return
+			}
 		}
-		maxViews, _ := strconv.Atoi(r.FormValue("maxviews"))
-		if maxViews == 0 {
-			maxViews = 1
+
+		maxViews, err := strconv.Atoi(r.FormValue("maxviews"))
+
+		if err != nil {
+			if r.FormValue("maxviews") == "" {
+				maxViews = 1
+			} else {
+				http.Error(w, "Expected int value", http.StatusNotAcceptable)
+				return
+			}
 		}
-		// Валидация тут
 
 		key := generateKey(8)
 		expiresAt := time.Now().Add(time.Duration(expiration) * time.Minute) // Пример: фиксированное время
