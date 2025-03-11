@@ -50,16 +50,21 @@ func CreateHandler(s storage.Storage) http.HandlerFunc {
 			}
 		}
 
-		key := generateKey(8)
-		expiresAt := time.Now().Add(time.Duration(expiration) * time.Minute) // Пример: фиксированное время
-		link := storage.Link{
-			Secret:    secret,
-			ExpiresAt: expiresAt,
-			MaxViews:  maxViews,
+		var resultKey string
+
+		for keyIsUnique := false; !keyIsUnique; {
+			key := generateKey(8)
+			expiresAt := time.Now().Add(time.Duration(expiration) * time.Minute) // Пример: фиксированное время
+			link := storage.Link{
+				Secret:    secret,
+				ExpiresAt: expiresAt,
+				MaxViews:  maxViews,
+			}
+
+			keyIsUnique = s.Create(key, link, true)
+			resultKey = key
 		}
 
-		s.Create(key, link)
-
-		fmt.Fprintf(w, "http://%s/%s", r.Host, key)
+		fmt.Fprintf(w, "http://%s/%s", r.Host, resultKey)
 	}
 }

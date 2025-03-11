@@ -13,7 +13,8 @@ type Link struct {
 }
 
 type Storage interface {
-	Create(key string, link Link)
+	Create(key string, link Link, b bool) bool
+	Update(key string, link Link)
 	Get(key string) (Link, bool)
 	Delete(key string)
 }
@@ -29,7 +30,20 @@ func NewMemoryStorage() *MemoryStorage {
 	}
 }
 
-func (s *MemoryStorage) Create(key string, link Link) {
+func (s *MemoryStorage) Create(key string, link Link, b bool) bool {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for k := range s.links {
+		if k == key {
+			b = false
+			return b
+		}
+	}
+	s.links[key] = link
+	return b
+}
+
+func (s *MemoryStorage) Update(key string, link Link) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.links[key] = link
