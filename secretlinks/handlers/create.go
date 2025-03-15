@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"secretlinks/middleware"
 	"secretlinks/storage"
 	"strconv"
 	"time"
@@ -26,7 +27,7 @@ func CreateHandler(s storage.Storage) http.HandlerFunc {
 			return
 		}
 
-		secret := r.FormValue("secret")
+		secret := middleware.EncryptText(r.FormValue("secret"))
 
 		expiration, err := strconv.Atoi(r.FormValue("expiration"))
 

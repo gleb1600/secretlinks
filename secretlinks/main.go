@@ -21,5 +21,5 @@ func main() {
 	http.ListenAndServe(":8080", newMux)
 }
 
-// Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8080/create" -Body @{secret="i love nika"}
+// Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8080/create" -Body @{secret="i love nika";maxviews=2}
 // curl http://127.0.0.1:8080/qELIuIRM

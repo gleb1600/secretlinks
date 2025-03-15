@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"secretlinks/middleware"
 	"secretlinks/storage"
 	"time"
 )
@@ -32,6 +33,6 @@ func RedirectHandler(s storage.Storage) http.HandlerFunc {
 		s.Update(key, link)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(link.Secret))
+		w.Write([]byte(middleware.DecryptText(link.Secret)))
 	}
 }
