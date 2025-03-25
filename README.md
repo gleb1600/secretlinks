@@ -43,14 +43,11 @@ http://localhost:8080/AbCdEfGh
 curl http://localhost:8080/AbCdEfGh
 ```
 ## Структура проекта
-/secretlinks
-
-├── handlers      # HTTP-обработчика
-
-├── storage       # Логика хранения данных
-
-├── middleware    # Промежуточный слой
-
-├── main.go       # Точка входа
-
-└── go.mod        # Зависимос
+```bash
+secretlinks
+        ├── handlers      # HTTP-обработчика
+        ├── storage       # Логика хранения данных
+        ├── middleware    # Промежуточный слой
+        ├── main.go       # Точка входа
+        └── go.mod        # Зависимости
+```
