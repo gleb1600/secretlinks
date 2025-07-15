@@ -65,6 +65,7 @@ func CreateHandler(s storage.Storage) http.HandlerFunc {
 			keyIsUnique = s.Create(key, link, true)
 			resultKey = key
 		}
+		SendStats(resultKey, "newlinks")
 
 		fmt.Fprintf(w, "http://%s/%s", r.Host, resultKey)
 	}

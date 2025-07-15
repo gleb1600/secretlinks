@@ -31,6 +31,7 @@ func RedirectHandler(s storage.Storage) http.HandlerFunc {
 
 		link.Views++
 		s.Update(key, link)
+		SendStats(key, "updatelinks")
 
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(middleware.DecryptText(link.Secret)))
