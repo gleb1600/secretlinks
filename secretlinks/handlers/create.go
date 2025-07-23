@@ -27,6 +27,10 @@ func CreateHandler(s storage.Storage) http.HandlerFunc {
 			return
 		}
 
+		if r.FormValue("secret") == "" {
+			http.Error(w, "Expected 'secret' value", http.StatusNotAcceptable)
+			return
+		}
 		secret := middleware.EncryptText(r.FormValue("secret"))
 
 		expiration, err := strconv.Atoi(r.FormValue("expiration"))
